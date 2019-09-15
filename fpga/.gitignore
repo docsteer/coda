@@ -1,0 +1,7 @@
+# GitIgnore file for CODA DMX Analyzer
+
+# Ignore SCONS compilation DB
+.sconsign.dblite
+
+# Ignore output files
+output/*
