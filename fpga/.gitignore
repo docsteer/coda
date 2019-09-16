@@ -3,5 +3,8 @@
 # Ignore SCONS compilation DB
 .sconsign.dblite
 
+# Ignore Atom IDE file
+abc.history
+
 # Ignore output files
 output/*

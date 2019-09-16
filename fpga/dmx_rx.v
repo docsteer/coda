@@ -33,62 +33,18 @@ module dmx_rx
      begin
      r_rxData <= i_Rx_DataReady;
 
-       case(r_OutputState)
-       s_IDLE:
-         begin
-           r_dataReady <= 1'b0;
-           if(r_rxData)
-           begin
-               r_data <= 8'h00;
-               if(i_usbReady)
-                  r_OutputState <= s_HIGHNIBBLE;
-               else
-                 r_OutputState <= s_USBWAIT;
-           end
+     if(i_Rx_DataReady)
+     begin
+        r_data <= i_RxData;
+     end
 
-
-           if(i_RxBreak)
-           begin
-             r_data <= 8'hbb;
-             if(i_usbReady)
-                r_OutputState <= s_HIGHNIBBLE;
-             else
-               r_OutputState <= s_USBWAIT;
-           end
-         end
-
-         s_USBWAIT:
-         begin
-          if(i_usbReady)
-            r_OutputState <= s_HIGHNIBBLE;
-         end
-
-
-         s_HIGHNIBBLE:
-         begin
-           r_dataReady <= 1'b1;
-           r_OutputState <= s_PREPLOWNIBBLE;
-         end
-
-         s_PREPLOWNIBBLE:
-         begin
-           r_dataReady <= 1'b0;
-           r_data <= i_RxData;
-           r_OutputState <= s_WAITLOWNIBBLE;
-         end
-
-         s_WAITLOWNIBBLE:
-         begin
-          r_OutputState <= s_LOWNIBBLE;
-         end
-
-         s_LOWNIBBLE:
-         begin
-           r_dataReady <= 1'b1;
-           r_OutputState <= s_IDLE;
-         end
-       endcase
-       end
+     if(r_rxData)
+     begin
+       r_dataReady <= 1'b1;
+     end
+     else
+      r_dataReady <= 1'b0;
+     end
 
        assign o_dataReady = r_dataReady;
        assign o_data = r_data;
